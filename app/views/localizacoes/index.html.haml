@@ -1,0 +1,60 @@
+%h1 Todas as localizações
+
+%table
+  %thead
+    %tr
+      %th Nome
+      %th Latitude
+      %th Longitude
+      %th
+      %th
+      %th
+
+  %tbody
+    - @localizacoes.each do |localizacao|
+      %tr
+        %td= localizacao.nome
+        %td= localizacao.latitude
+        %td= localizacao.longitude
+        %td= link_to 'Show', localizacao
+        %td= link_to 'Edit', edit_localizacao_path(localizacao)
+        %td= link_to 'Destroy', localizacao, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Localizacao', new_localizacao_path
+
+// Aqui ficará o mapa
+%hr
+%br
+#gmap{style: "width:100%; height:400px; background-color:#f1f1f1;"}
+
+// MAPLACE
+:javascript
+  $(function() {
+    var localization = [
+      {
+          lat: -3.7901514,
+          lon: -38.5492008,
+          title: 'Localização 1',
+          html: '<b> Data e hora 1</b>',
+          icon: 'http://maps.google.com/mapfiles/markerA.png',
+          animation: google.maps.Animation.DROP
+      },
+      {
+          lat: -3.7900614,
+          lon: -38.5412008,
+          title: 'Localização 2',
+          html: '<b> Data e hora 2</b>',
+          icon: 'http://maps.google.com/mapfiles/markerB.png',
+          animation: google.maps.Animation.DROP,
+          show_infowindow: true
+      },
+
+    ];
+    new Maplace({
+      locations: localization,
+        map_div: '#gmap',
+        controls_title: 'Escolha a localização:'
+    }).Load();
+  });
