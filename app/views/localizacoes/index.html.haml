@@ -27,34 +27,22 @@
 // Aqui ficará o mapa
 %hr
 %br
-#gmap{style: "width:100%; height:400px; background-color:#f1f1f1;"}
+%div{style:'width: 100%;'}
+  #gmap-dropdown{style:'width: 100%; height: 450px;'}
+
 
 // MAPLACE
 :javascript
-  $(function() {
-    var localization = [
-      {
-          lat: -3.7901514,
-          lon: -38.5492008,
-          title: 'Localização 1',
-          html: '<b> Data e hora 1</b>',
-          icon: 'http://maps.google.com/mapfiles/markerA.png',
-          animation: google.maps.Animation.DROP
-      },
-      {
-          lat: -3.7900614,
-          lon: -38.5412008,
-          title: 'Localização 2',
-          html: '<b> Data e hora 2</b>',
-          icon: 'http://maps.google.com/mapfiles/markerB.png',
-          animation: google.maps.Animation.DROP,
-          show_infowindow: true
-      },
-
-    ];
-    new Maplace({
-      locations: localization,
-        map_div: '#gmap',
-        controls_title: 'Escolha a localização:'
-    }).Load();
-  });
+  new Maplace({
+    locations : #{@localizacoes.to_json(:only => [ :latitude, :longitude, :nome]).gsub('latitude', 'lat').gsub('longitude', 'lon').gsub('nome', 'title')},
+    //locations: #{@localizacoes.to_json(:only => [ :latitude, :longitude, :nome]).gsub('latitude', 'lat').gsub('longitude', 'lon').gsub('nome', 'title')},
+    map_div: '#gmap-dropdown',
+    controls_title: 'Selecione uma localização:',
+    draggable : false,
+    view_all_text: "Ver todos",
+    type: 'polyline',
+    shared: {
+        zoom: 16,
+        html: '#{@localizacoes.find(1).created_at.to_json}'
+    }
+  }).Load();
